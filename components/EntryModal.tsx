@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { todayKey, uid } from "@/lib/db";
-import type { Entry, EntryType } from "@/lib/types";
+import type { Entry, EntryType, Tag } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const TYPE_ICONS = {
@@ -32,6 +32,7 @@ interface EntryModalProps {
   /** Entrada a editar, o null para crear nueva */
   editing: Entry | null;
   onSave: (entry: Entry) => Promise<void>;
+  tags: Tag[];
 }
 
 export function EntryModal({
@@ -39,6 +40,7 @@ export function EntryModal({
   onOpenChange,
   editing,
   onSave,
+  tags,
 }: EntryModalProps) {
   const [type, setType] = useState<EntryType>("note");
   const [content, setContent] = useState("");
@@ -47,6 +49,7 @@ export function EntryModal({
   const [sleep, setSleep] = useState(3);
   const [wordCount, setWordCount] = useState(0);
   const [imageData, setImageData] = useState("");
+  const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
 
   // Reset state when dialog opens
@@ -66,6 +69,7 @@ export function EntryModal({
         if (editing.meta.kind === "photo") {
           setImageData(editing.meta.imageData);
         }
+        setSelectedTagIds(editing.tagIds);
       } else {
         setType("note");
         setContent("");
@@ -74,6 +78,7 @@ export function EntryModal({
         setSleep(3);
         setWordCount(0);
         setImageData("");
+        setSelectedTagIds([]);
       }
     }
     onOpenChange(next);
@@ -98,7 +103,7 @@ export function EntryModal({
         createdAt: editing?.createdAt ?? now,
         updatedAt: now,
         day: editing?.day ?? todayKey(),
-        tagIds: editing?.tagIds ?? [],
+        tagIds: selectedTagIds,
         meta: { kind: "note" },
       };
 
@@ -271,6 +276,42 @@ export function EntryModal({
                   onChange={(e) => setContent(e.target.value)}
                   placeholder="¿Qué es esta foto?"
                 />
+              </div>
+            </div>
+          )}
+
+          {/* Tags selector */}
+          {tags.length > 0 && (
+            <div className="grid gap-2">
+              <Label>Tags</Label>
+              <div className="flex flex-wrap gap-1.5">
+                {tags.map((tag) => {
+                  const active = selectedTagIds.includes(tag.id);
+                  return (
+                    <button
+                      key={tag.id}
+                      type="button"
+                      aria-pressed={active}
+                      onClick={() =>
+                        setSelectedTagIds((prev) =>
+                          active
+                            ? prev.filter((id) => id !== tag.id)
+                            : [...prev, tag.id],
+                        )
+                      }
+                      className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs transition-colors ${
+                        active
+                          ? "border-transparent text-white"
+                          : "border-input hover:bg-accent"
+                      }`}
+                      style={
+                        active ? { backgroundColor: tag.color } : undefined
+                      }
+                    >
+                      {tag.name}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}

@@ -1,23 +1,28 @@
 "use client";
 
-import { Plus, Settings } from "lucide-react";
+import { Plus, Settings, Tag as TagIcon } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { DailySummaryCard } from "@/components/DailySummaryCard";
 import { EntryCard } from "@/components/EntryCard";
 import { EntryModal } from "@/components/EntryModal";
+import { TagManager } from "@/components/TagManager";
 import { Button } from "@/components/ui/button";
 import {
   deleteEntry,
+  deleteTag,
   getAllEntries,
   getAllTags,
   getSummaryByDay,
   putEntry,
   putSummary,
+  putTag,
   todayKey,
 } from "@/lib/db";
 import { generateDailySummary } from "@/lib/ollama";
-import type { DailySummary, Entry, Tag } from "@/lib/types";
+import type { DailySummary, Entry, EntryType, Tag } from "@/lib/types";
+import { ENTRY_TYPES } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 export function Timeline() {
   const [entries, setEntries] = useState<Entry[]>([]);
@@ -27,6 +32,9 @@ export function Timeline() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Entry | null>(null);
   const [deleting, setDeleting] = useState<Entry | null>(null);
+  const [tagManagerOpen, setTagManagerOpen] = useState(false);
+  const [filterTag, setFilterTag] = useState<string | null>(null);
+  const [filterType, setFilterType] = useState<EntryType | null>(null);
   const [loading, setLoading] = useState(true);
 
   const today = todayKey();
@@ -91,16 +99,45 @@ export function Timeline() {
     }
   };
 
+  const handleSaveTag = async (tag: Tag) => {
+    await putTag(tag);
+    await load();
+  };
+
+  const handleDeleteTag = async (tagId: string) => {
+    await deleteTag(tagId);
+    // Remove the tag from all entries that reference it
+    const updated = entries.map((e) =>
+      e.tagIds.includes(tagId)
+        ? { ...e, tagIds: e.tagIds.filter((id) => id !== tagId) }
+        : e,
+    );
+    for (const e of updated) {
+      await putEntry(e);
+    }
+    if (filterTag === tagId) setFilterTag(null);
+    await load();
+  };
+
+  // Filter entries by tag and type
+  const filteredEntries = useMemo(() => {
+    return entries.filter((e) => {
+      if (filterTag && !e.tagIds.includes(filterTag)) return false;
+      if (filterType && e.type !== filterType) return false;
+      return true;
+    });
+  }, [entries, filterTag, filterType]);
+
   // Group entries by day for the timeline
   const grouped = useMemo(() => {
     const map = new Map<string, Entry[]>();
-    for (const e of entries) {
+    for (const e of filteredEntries) {
       const list = map.get(e.day) ?? [];
       list.push(e);
       map.set(e.day, list);
     }
     return Array.from(map.entries()).sort((a, b) => b[0].localeCompare(a[0]));
-  }, [entries]);
+  }, [filteredEntries]);
 
   const formatDay = (day: string): string => {
     const d = new Date(`${day}T12:00:00`);
@@ -153,16 +190,103 @@ export function Timeline() {
       <div className="mt-6">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Timeline</h2>
-          <Button
-            onClick={() => {
-              setEditing(null);
-              setModalOpen(true);
-            }}
-          >
-            <Plus className="h-4 w-4" aria-hidden="true" />
-            Nueva entrada
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setTagManagerOpen(true)}
+            >
+              <TagIcon className="h-4 w-4" aria-hidden="true" />
+              Tags
+            </Button>
+            <Button
+              onClick={() => {
+                setEditing(null);
+                setModalOpen(true);
+              }}
+            >
+              <Plus className="h-4 w-4" aria-hidden="true" />
+              Nueva entrada
+            </Button>
+          </div>
         </div>
+
+        {/* Filters */}
+        {(tags.length > 0 || filterType) && (
+          <div className="mb-4 space-y-2">
+            {tags.length > 0 && (
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span className="text-xs text-muted-foreground">Tag:</span>
+                <button
+                  type="button"
+                  onClick={() => setFilterTag(null)}
+                  className={cn(
+                    "rounded-full border px-2.5 py-0.5 text-xs transition-colors",
+                    filterTag === null
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "border-input hover:bg-accent",
+                  )}
+                >
+                  Todos
+                </button>
+                {tags.map((tag) => (
+                  <button
+                    key={tag.id}
+                    type="button"
+                    onClick={() =>
+                      setFilterTag((prev) => (prev === tag.id ? null : tag.id))
+                    }
+                    className={cn(
+                      "rounded-full border px-2.5 py-0.5 text-xs transition-colors",
+                      filterTag === tag.id
+                        ? "border-transparent text-white"
+                        : "border-input hover:bg-accent",
+                    )}
+                    style={
+                      filterTag === tag.id
+                        ? { backgroundColor: tag.color }
+                        : undefined
+                    }
+                  >
+                    {tag.name}
+                  </button>
+                ))}
+              </div>
+            )}
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="text-xs text-muted-foreground">Tipo:</span>
+              <button
+                type="button"
+                onClick={() => setFilterType(null)}
+                className={cn(
+                  "rounded-full border px-2.5 py-0.5 text-xs transition-colors",
+                  filterType === null
+                    ? "border-primary bg-primary/10 text-primary"
+                    : "border-input hover:bg-accent",
+                )}
+              >
+                Todos
+              </button>
+              {(Object.keys(ENTRY_TYPES) as EntryType[]).map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() =>
+                    setFilterType((prev) => (prev === t ? null : t))
+                  }
+                  className={cn(
+                    "rounded-full border px-2.5 py-0.5 text-xs transition-colors",
+                    filterType === t
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "border-input hover:bg-accent",
+                  )}
+                >
+                  {ENTRY_TYPES[t].label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {grouped.length === 0 ? (
           <div className="rounded-lg border border-dashed p-8 text-center">
@@ -202,6 +326,15 @@ export function Timeline() {
         onOpenChange={setModalOpen}
         editing={editing}
         onSave={handleSave}
+        tags={tags}
+      />
+
+      <TagManager
+        open={tagManagerOpen}
+        onOpenChange={setTagManagerOpen}
+        tags={tags}
+        onSave={handleSaveTag}
+        onDelete={handleDeleteTag}
       />
 
       <ConfirmDialog

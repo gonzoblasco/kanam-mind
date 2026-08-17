@@ -1,15 +1,18 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import {
   deleteEntry,
+  deleteTag,
   getAllEntries,
+  getAllTags,
   getEntriesByDay,
   getSummaryByDay,
   putEntry,
   putSummary,
+  putTag,
   todayKey,
   uid,
 } from "./db";
-import type { DailySummary, Entry } from "./types";
+import type { DailySummary, Entry, Tag } from "./types";
 
 function makeEntry(overrides: Partial<Entry> = {}): Entry {
   return {
@@ -104,5 +107,44 @@ describe("db", () => {
     await putSummary(summary);
     const got = await getSummaryByDay(day);
     expect(got?.content).toBe("Buen día");
+  });
+
+  it("putTag y getAllTags roundtrip", async () => {
+    const tag: Tag = {
+      id: uid(),
+      name: "ideas",
+      color: "#3b82f6",
+      createdAt: new Date().toISOString(),
+    };
+    await putTag(tag);
+    const all = await getAllTags();
+    expect(all).toHaveLength(1);
+    expect(all[0].name).toBe("ideas");
+  });
+
+  it("deleteTag elimina un tag", async () => {
+    const tag: Tag = {
+      id: uid(),
+      name: "trabajo",
+      color: "#22c55e",
+      createdAt: new Date().toISOString(),
+    };
+    await putTag(tag);
+    await deleteTag(tag.id);
+    const all = await getAllTags();
+    expect(all).toHaveLength(0);
+  });
+
+  it("una entrada puede tener múltiples tags", async () => {
+    const t1: Tag = { id: uid(), name: "a", color: "#111", createdAt: "" };
+    const t2: Tag = { id: uid(), name: "b", color: "#222", createdAt: "" };
+    await putTag(t1);
+    await putTag(t2);
+    const entry = makeEntry({ tagIds: [t1.id, t2.id] });
+    await putEntry(entry);
+    const got = await getAllEntries();
+    expect(got[0].tagIds).toHaveLength(2);
+    expect(got[0].tagIds).toContain(t1.id);
+    expect(got[0].tagIds).toContain(t2.id);
   });
 });
