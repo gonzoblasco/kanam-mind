@@ -78,6 +78,12 @@ Relaciones: `entries` puede tener múltiples `tags` (many-to-many). `summaries` 
 
 ## 8. Roadmap
 
+### Identidad visual (2026-08-17)
+- [x] Dirección elegida: **Diario íntimo** (cálido, papel, serif) - la más diferenciada del shadcn default
+- [x] Paleta cálida (crema #faf8f5, tinta #302b27, acento dorado #c7a56b) via Tailwind 4 @theme
+- [x] Tipografía Georgia serif, tarjetas tipo papel, resumen como nota al margen
+- [x] Fix: @tailwindcss/postcss + postcss.config.mjs (utilidades Tailwind 4 no se generaban)
+
 ### OpenSpec (2026-08-17)
 - [x] Inicializado OpenSpec (schema spec-driven) con project.md + config.yaml
 - [x] 8 specs (22 requirements): timeline, entradas, tags, resumen-ia, pwa-offline, export, settings, sync

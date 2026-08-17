@@ -6,6 +6,7 @@ import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { DailySummaryCard } from "@/components/DailySummaryCard";
 import { EntryCard } from "@/components/EntryCard";
 import { EntryModal } from "@/components/EntryModal";
+import { SettingsModal } from "@/components/SettingsModal";
 import { TagManager } from "@/components/TagManager";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,6 +34,7 @@ export function Timeline() {
   const [editing, setEditing] = useState<Entry | null>(null);
   const [deleting, setDeleting] = useState<Entry | null>(null);
   const [tagManagerOpen, setTagManagerOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [filterTag, setFilterTag] = useState<string | null>(null);
   const [filterType, setFilterType] = useState<EntryType | null>(null);
   const [loading, setLoading] = useState(true);
@@ -171,9 +173,7 @@ export function Timeline() {
           variant="ghost"
           size="icon"
           aria-label="Configuración"
-          onClick={() => {
-            // TODO: settings modal
-          }}
+          onClick={() => setSettingsOpen(true)}
         >
           <Settings className="h-5 w-5" />
         </Button>
@@ -336,6 +336,8 @@ export function Timeline() {
         onSave={handleSaveTag}
         onDelete={handleDeleteTag}
       />
+
+      <SettingsModal open={settingsOpen} onOpenChange={setSettingsOpen} />
 
       <ConfirmDialog
         open={deleting !== null}
