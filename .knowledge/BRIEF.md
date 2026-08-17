@@ -78,6 +78,11 @@ Relaciones: `entries` puede tener múltiples `tags` (many-to-many). `summaries` 
 
 ## 8. Roadmap
 
+### OpenSpec (2026-08-17)
+- [x] Inicializado OpenSpec (schema spec-driven) con project.md + config.yaml
+- [x] 8 specs (22 requirements): timeline, entradas, tags, resumen-ia, pwa-offline, export, settings, sync
+- [x] 8 auditorías contra el comportamiento real (5 sin hallazgos, 3 pendientes)
+
 ### MVP v0.1 (completado 2026-08-17)
 - [x] Scaffold: Next.js 16 + Tailwind + shadcn/ui + Biome + Vitest + Serwist PWA
 - [x] Modelo de datos IndexedDB (entries, tags, summaries)
