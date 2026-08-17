@@ -1,0 +1,42 @@
+schema: spec-driven
+
+# Project context - shown to AI when creating artifacts.
+context: |
+  Kanam Mind - segundo cerebro local-first con IA. Timeline personal (notas, check-ins, ideas,
+  writing, fotos) + resumen IA diario. Privacidad total: los datos viven en IndexedDB local.
+
+  Tech stack:
+  - Next.js 16 (App Router, Turbopack)
+  - Tailwind CSS 4 + shadcn/ui (Radix primitives, accesible)
+  - IndexedDB via idb (un store por entidad) - 100% local-first, sin backend
+  - Ollama local como motor de IA (BYOK, default deepseek-v4-flash:cloud)
+  - Serwist PWA (offline-first)
+  - Vitest 4 (10 tests), testing-library + jsdom + fake-indexeddb
+
+  Convenciones:
+  - UI y prompts en español (el usuario escribe su vida en español)
+  - Campos de dominio en inglés (type, kind, day, tagIds) porque se serializan en IndexedDB
+  - Commits en inglés, formato type(scope): description
+  - Lógica pura testeable extraída a lib/*.ts (sin DB/DOM)
+  - Toda persistencia via lib/db.ts (componentes nunca tocan idb directo)
+  - Toda llamada IA via lib/ollama.ts
+  - Accesibilidad: Radix primitives, radios nativos, focus management, ARIA
+
+  Dominio:
+  - Entry (type: note/checkin/idea/writing/photo, content, meta, day, tagIds)
+  - Tag (name, color) - many-to-many con Entry
+  - DailySummary (day, content) - 1:1 por día, generado por IA
+
+  Estrategia de producto:
+  - Personal (ahora): uso individual, local-first, privacidad total
+  - Sync (futuro): híbrido como evolución natural, no punto de partida
+  - Multi-tenant (futuro lejano): círculo de confianza
+
+rules:
+  proposal:
+    - Keep proposals concise (1-2 pages)
+    - Every capability must map to a real spec file
+    - Include a "Non-goals" section
+  tasks:
+    - Break tasks into chunks of max 2 hours
+    - Each task = commit atómico + push + actualizar STATUS.md

@@ -85,10 +85,10 @@ Relaciones: `entries` puede tener múltiples `tags` (many-to-many). `summaries` 
 - [x] Crear/editar/eliminar entradas (modal accesible)
 - [x] Resumen IA diario con Ollama local
 - [x] PWA offline + página ~offline
-- [x] 7 tests + build verde
+- [x] Tags + filtros (TagManager, selección en modal, filtro por tag/tipo)
+- [x] 10 tests + build verde
 
 ### Post-MVP
-- [ ] Tags + filtros
 - [ ] Export JSON
 - [ ] Settings modal (config Ollama)
 - [ ] Sync entre máquinas (híbrido)
