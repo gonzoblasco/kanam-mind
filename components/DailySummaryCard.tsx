@@ -37,12 +37,12 @@ export function DailySummaryCard({
 
   return (
     <section
-      className="rounded-lg border bg-gradient-to-br from-primary/5 to-transparent p-4"
+      className="rounded-lg border border-[#e5dccb] border-l-4 border-l-[#c9a86a] bg-[#f0e8da]/50 p-4"
       aria-label="Resumen del día"
     >
       <div className="flex items-center justify-between gap-2">
         <h2 className="flex items-center gap-2 text-sm font-semibold">
-          <Sparkles className="h-4 w-4 text-primary" aria-hidden="true" />
+          <Sparkles className="h-4 w-4 text-[#c9a86a]" aria-hidden="true" />
           Resumen del día
         </h2>
         <Button
@@ -67,9 +67,11 @@ export function DailySummaryCard({
       )}
 
       {summary ? (
-        <p className="mt-2 whitespace-pre-wrap text-sm">{summary.content}</p>
+        <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed">
+          {summary.content}
+        </p>
       ) : (
-        <p className="mt-2 text-sm text-muted-foreground">
+        <p className="mt-2 text-sm italic text-[#8a7f6f]">
           {entries.length === 0
             ? "No hay entradas hoy todavía. Registrá algo para que Kanam pueda resumir tu día."
             : "Generá un resumen de tu día con IA local."}

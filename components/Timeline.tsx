@@ -159,12 +159,12 @@ export function Timeline() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-6">
-      <header className="mb-6 flex items-center justify-between">
+    <div className="mx-auto max-w-2xl px-4 py-8">
+      <header className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Kanam Mind</h1>
-          <p className="text-sm text-muted-foreground">
-            Tu segundo cerebro. Privado, local, tuyo.
+          <h1 className="text-3xl font-bold tracking-tight">Kanam Mind</h1>
+          <p className="mt-1 text-sm italic text-[#8a7f6f]">
+            tu segundo cerebro
           </p>
         </div>
         <Button
@@ -189,7 +189,7 @@ export function Timeline() {
 
       <div className="mt-6">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Timeline</h2>
+          <h2 className="text-xl font-semibold">Timeline</h2>
           <div className="flex gap-2">
             <Button
               variant="outline"
@@ -289,8 +289,8 @@ export function Timeline() {
         )}
 
         {grouped.length === 0 ? (
-          <div className="rounded-lg border border-dashed p-8 text-center">
-            <p className="text-muted-foreground">
+          <div className="rounded-lg border border-dashed border-[#d4c8b0] p-10 text-center">
+            <p className="italic text-[#8a7f6f]">
               Tu mente está en blanco. Empezá registrando tu primer momento.
             </p>
           </div>
@@ -298,7 +298,7 @@ export function Timeline() {
           <div className="space-y-6">
             {grouped.map(([day, dayEntries]) => (
               <section key={day} aria-label={formatDay(day)}>
-                <h3 className="mb-2 text-sm font-medium capitalize text-muted-foreground">
+                <h3 className="mb-3 border-b border-[#e5dccb] pb-1 text-sm font-semibold capitalize text-[#8a7f6f]">
                   {formatDay(day)}
                 </h3>
                 <div className="space-y-2">

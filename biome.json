@@ -12,7 +12,8 @@
       "!**/node_modules",
       "!**/.next",
       "!**/public/sw.js",
-      "!**/next-env.d.ts"
+      "!**/next-env.d.ts",
+      "!**/mockups"
     ]
   },
   "formatter": {
@@ -34,6 +35,11 @@
     "formatter": {
       "quoteStyle": "double",
       "semicolons": "always"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
     }
   }
 }

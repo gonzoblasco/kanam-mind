@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanam Mind - Direcciones de diseño</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, sans-serif; background: #0a0a0a; color: #fff; padding: 40px; }
+  h1 { font-size: 24px; margin-bottom: 8px; }
+  .sub { color: #888; margin-bottom: 32px; font-size: 14px; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 1200px; }
+  .card { border-radius: 16px; overflow: hidden; border: 1px solid #222; background: #111; }
+  .card-header { padding: 16px 20px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
+  .card-header h2 { font-size: 15px; }
+  .card-header .tag { font-size: 11px; color: #888; background: #1a1a1a; padding: 3px 8px; border-radius: 20px; }
+  .preview { padding: 24px; min-height: 320px; }
+
+  /* ===== Dirección 1: Diario íntimo ===== */
+  .d1 { background: #faf6f0; color: #2d2a26; font-family: Georgia, serif; }
+  .d1 .app-title { font-family: Georgia, serif; font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
+  .d1 .app-sub { font-size: 12px; color: #8a7f6f; font-style: italic; }
+  .d1 .summary { background: #f0e8da; border-left: 3px solid #c9a86a; padding: 14px; border-radius: 8px; margin-top: 16px; font-size: 13px; line-height: 1.6; }
+  .d1 .entry { border-bottom: 1px solid #e5dccb; padding: 12px 0; }
+  .d1 .entry-time { font-size: 11px; color: #a89a85; }
+  .d1 .entry-text { font-size: 14px; margin-top: 4px; line-height: 1.5; }
+  .d1 .btn { background: #c9a86a; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-family: Georgia, serif; }
+
+  /* ===== Dirección 2: Mente / cerebro (oscuro premium) ===== */
+  .d2 { background: #0b0d12; color: #e8eaf0; font-family: system-ui, sans-serif; }
+  .d2 .app-title { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+  .d2 .app-sub { font-size: 12px; color: #6b7280; }
+  .d2 .summary { background: linear-gradient(135deg, rgba(52,211,153,0.08), rgba(139,92,246,0.08)); border: 1px solid rgba(52,211,153,0.2); padding: 14px; border-radius: 12px; margin-top: 16px; font-size: 13px; line-height: 1.6; }
+  .d2 .entry { background: #131722; border: 1px solid #1e2433; border-radius: 10px; padding: 12px; margin-top: 10px; }
+  .d2 .entry-time { font-size: 11px; color: #6b7280; }
+  .d2 .entry-text { font-size: 14px; margin-top: 4px; }
+  .d2 .btn { background: linear-gradient(135deg, #34d399, #8b5cf6); color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; }
+
+  /* ===== Dirección 3: Minimal zen ===== */
+  .d3 { background: #ffffff; color: #111; font-family: system-ui, sans-serif; }
+  .d3 .app-title { font-size: 20px; font-weight: 600; letter-spacing: -0.5px; }
+  .d3 .app-sub { font-size: 13px; color: #999; }
+  .d3 .summary { background: #f7f7f5; border-radius: 12px; padding: 16px; margin-top: 16px; font-size: 13px; line-height: 1.6; color: #444; }
+  .d3 .entry { padding: 14px 0; border-bottom: 1px solid #f0f0f0; }
+  .d3 .entry-time { font-size: 11px; color: #bbb; }
+  .d3 .entry-text { font-size: 15px; margin-top: 4px; }
+  .d3 .btn { background: #111; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; }
+
+  /* ===== Dirección 4: Editorial ===== */
+  .d4 { background: #fdfdfb; color: #1a1a1a; font-family: Georgia, serif; }
+  .d4 .app-title { font-family: Georgia, serif; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+  .d4 .app-sub { font-size: 12px; color: #999; text-transform: uppercase; letter-spacing: 1px; }
+  .d4 .summary { border-top: 2px solid #111; border-bottom: 2px solid #111; padding: 14px 0; margin-top: 16px; font-size: 13px; line-height: 1.7; }
+  .d4 .entry { padding: 14px 0; border-bottom: 1px solid #e5e5e5; }
+  .d4 .entry-time { font-size: 11px; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; }
+  .d4 .entry-text { font-size: 15px; margin-top: 4px; line-height: 1.6; }
+  .d4 .btn { background: #111; color: #fff; border: none; padding: 8px 18px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+  <h1>Kanam Mind — Direcciones de diseño</h1>
+  <p class="sub">4 identidades visuales posibles. Elegí la que resuene con tu segundo cerebro.</p>
+
+  <div class="grid">
+    <!-- D1 -->
+    <div class="card">
+      <div class="card-header">
+        <h2>1. Diario íntimo</h2>
+        <span class="tag">cálido · papel · serif</span>
+      </div>
+      <div class="preview d1">
+        <div class="app-title">Kanam Mind</div>
+        <div class="app-sub">tu segundo cerebro</div>
+        <div class="summary">Hoy fue un día de estreno. Lograste que Kanam Mind funcionara con tu primera entrada, y eso es un gran paso. Se nota que estás en modo relajado, con ganas de experimentar.</div>
+        <div style="margin-top:16px">
+          <div class="entry"><div class="entry-time">07:18 p. m.</div><div class="entry-text">Vamos a hacer algo divertido</div></div>
+          <div class="entry"><div class="entry-time">06:55 p. m.</div><div class="entry-text">Primera entrada de prueba. Kanam Mind funciona!</div></div>
+        </div>
+        <div style="margin-top:16px"><button class="btn">Nueva entrada</button></div>
+      </div>
+    </div>
+
+    <!-- D2 -->
+    <div class="card">
+      <div class="card-header">
+        <h2>2. Mente / cerebro</h2>
+        <span class="tag">oscuro · neón · glass</span>
+      </div>
+      <div class="preview d2">
+        <div class="app-title">Kanam Mind</div>
+        <div class="app-sub">tu segundo cerebro</div>
+        <div class="summary">Hoy fue un día de estreno. Lograste que Kanam Mind funcionara con tu primera entrada, y eso es un gran paso. Se nota que estás en modo relajado, con ganas de experimentar.</div>
+        <div style="margin-top:16px">
+          <div class="entry"><div class="entry-time">07:18 p. m.</div><div class="entry-text">Vamos a hacer algo divertido</div></div>
+          <div class="entry"><div class="entry-time">06:55 p. m.</div><div class="entry-text">Primera entrada de prueba. Kanam Mind funciona!</div></div>
+        </div>
+        <div style="margin-top:16px"><button class="btn">Nueva entrada</button></div>
+      </div>
+    </div>
+
+    <!-- D3 -->
+    <div class="card">
+      <div class="card-header">
+        <h2>3. Minimal zen</h2>
+        <span class="tag">limpio · whitespace · Notion</span>
+      </div>
+      <div class="preview d3">
+        <div class="app-title">Kanam Mind</div>
+        <div class="app-sub">tu segundo cerebro</div>
+        <div class="summary">Hoy fue un día de estreno. Lograste que Kanam Mind funcionara con tu primera entrada, y eso es un gran paso. Se nota que estás en modo relajado, con ganas de experimentar.</div>
+        <div style="margin-top:16px">
+          <div class="entry"><div class="entry-time">07:18 p. m.</div><div class="entry-text">Vamos a hacer algo divertido</div></div>
+          <div class="entry"><div class="entry-time">06:55 p. m.</div><div class="entry-text">Primera entrada de prueba. Kanam Mind funciona!</div></div>
+        </div>
+        <div style="margin-top:16px"><button class="btn">Nueva entrada</button></div>
+      </div>
+    </div>
+
+    <!-- D4 -->
+    <div class="card">
+      <div class="card-header">
+        <h2>4. Editorial</h2>
+        <span class="tag">tipografía · revista · serif</span>
+      </div>
+      <div class="preview d4">
+        <div class="app-title">Kanam Mind</div>
+        <div class="app-sub">tu segundo cerebro</div>
+        <div class="summary">Hoy fue un día de estreno. Lograste que Kanam Mind funcionara con tu primera entrada, y eso es un gran paso. Se nota que estás en modo relajado, con ganas de experimentar.</div>
+        <div style="margin-top:16px">
+          <div class="entry"><div class="entry-time">07:18 p. m.</div><div class="entry-text">Vamos a hacer algo divertido</div></div>
+          <div class="entry"><div class="entry-time">06:55 p. m.</div><div class="entry-text">Primera entrada de prueba. Kanam Mind funciona!</div></div>
+        </div>
+        <div style="margin-top:16px"><button class="btn">Nueva entrada</button></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

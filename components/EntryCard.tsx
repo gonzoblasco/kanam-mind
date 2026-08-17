@@ -14,11 +14,11 @@ const TYPE_ICONS = {
 };
 
 const TYPE_COLORS: Record<Entry["type"], string> = {
-  note: "text-blue-500",
-  checkin: "text-green-500",
-  idea: "text-amber-500",
-  writing: "text-purple-500",
-  photo: "text-pink-500",
+  note: "text-[#8a7f6f]",
+  checkin: "text-[#7a9e6b]",
+  idea: "text-[#c9a86a]",
+  writing: "text-[#8b6ba8]",
+  photo: "text-[#b07a6a]",
 };
 
 interface EntryCardProps {
@@ -39,12 +39,12 @@ export function EntryCard({ entry, tags, onEdit, onDelete }: EntryCardProps) {
 
   return (
     <article
-      className="group relative rounded-lg border bg-card p-4 shadow-sm transition-shadow hover:shadow-md"
+      className="group relative rounded-lg border border-[#e5dccb] bg-card p-4 shadow-sm transition-all hover:shadow-md hover:border-[#d4c8b0]"
       aria-label={`Entrada ${entry.type}`}
     >
       <div className="flex items-start gap-3">
         <div
-          className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted ${TYPE_COLORS[entry.type]}`}
+          className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#f0e8da] ${TYPE_COLORS[entry.type]}`}
           aria-hidden="true"
         >
           <Icon className="h-4 w-4" />
@@ -53,7 +53,7 @@ export function EntryCard({ entry, tags, onEdit, onDelete }: EntryCardProps) {
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-2">
             <time
-              className="text-xs text-muted-foreground"
+              className="text-xs italic text-[#a89a85]"
               dateTime={entry.createdAt}
             >
               {formatTime(entry.createdAt)}
@@ -80,20 +80,20 @@ export function EntryCard({ entry, tags, onEdit, onDelete }: EntryCardProps) {
 
           {entry.type === "checkin" && entry.meta.kind === "checkin" && (
             <div className="mt-1 flex flex-wrap gap-2 text-xs">
-              <span className="rounded bg-muted px-2 py-0.5">
+              <span className="rounded bg-[#f0e8da] px-2 py-0.5">
                 Ánimo: {MOOD_LABELS[entry.meta.mood] ?? entry.meta.mood}
               </span>
-              <span className="rounded bg-muted px-2 py-0.5">
+              <span className="rounded bg-[#f0e8da] px-2 py-0.5">
                 Energía: {entry.meta.energy}/5
               </span>
-              <span className="rounded bg-muted px-2 py-0.5">
+              <span className="rounded bg-[#f0e8da] px-2 py-0.5">
                 Sueño: {entry.meta.sleep}/5
               </span>
             </div>
           )}
 
           {entry.type === "writing" && entry.meta.kind === "writing" && (
-            <p className="mt-1 text-xs text-muted-foreground">
+            <p className="mt-1 text-xs italic text-[#a89a85]">
               {entry.meta.wordCount} palabras
             </p>
           )}
@@ -108,7 +108,9 @@ export function EntryCard({ entry, tags, onEdit, onDelete }: EntryCardProps) {
           )}
 
           {entry.content && (
-            <p className="mt-1 whitespace-pre-wrap text-sm">{entry.content}</p>
+            <p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed">
+              {entry.content}
+            </p>
           )}
 
           {entryTags.length > 0 && (
